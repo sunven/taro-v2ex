@@ -516,12 +516,12 @@ class Index extends Component {
         id: 623792
       }
     ];
-    // Taro.request({ url: "https://www.v2ex.com/api/topics/hot.json" }).then(
-    //   res => {
-    //     this.props.hotStore.setHotData(res.data);
-    //   }
-    // );
-    this.props.hotStore.setHotData(data);
+    Taro.request({ url: "https://www.v2ex.com/api/topics/hot.json" }).then(
+      res => {
+        this.props.hotStore.setHotData(res.data);
+      }
+    );
+    //this.props.hotStore.setHotData(data);
   }
 
   componentWillUnmount() {}
@@ -539,10 +539,7 @@ class Index extends Component {
     };
     const scrollTop = 0;
     const Threshold = 20;
-    const vStyleA = {
-      height: "150px",
-      "background-color": "rgb(26, 173, 25)"
-    };
+    
     return (
       <ScrollView
         className="scrollview"

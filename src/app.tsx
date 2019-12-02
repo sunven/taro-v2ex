@@ -4,6 +4,9 @@ import Hot from "./pages/hot";
 
 import counterStore from "./store/counter";
 import hotStore from "./store/hotStore";
+import newStore from "./store/newStore";
+import nodeStore from "./store/nodeStore";
+import nodeDetailStore from "./store/nodeDetailStore";
 
 import "./app.scss";
 
@@ -15,7 +18,10 @@ import "./app.scss";
 
 const store = {
   counterStore,
-  hotStore
+  hotStore,
+  newStore,
+  nodeStore,
+  nodeDetailStore
 };
 
 class App extends Component {
@@ -27,7 +33,7 @@ class App extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    pages: ["pages/hot/index", "pages/new/index", "pages/node/index"],
+    pages: ["pages/hot/index", "pages/new/index", "pages/node/index","pages/nodedetail/index"],
     tabBar: {
       list: [
         {

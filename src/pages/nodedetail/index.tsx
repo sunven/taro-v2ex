@@ -6,11 +6,10 @@ import { AtTag } from "taro-ui";
 import "taro-ui/dist/style/components/tag.scss";
 
 import "./index.scss";
-import { CommonEventFunction } from "@tarojs/components/types/common";
 
 type PageStateProps = {
-  nodeStore: {
-    nodeData: Array<any>;
+  nodeDetailStore: {
+    nodeDetailData: {}
     setNodeData: Function;
   };
 };
@@ -19,7 +18,7 @@ interface Index {
   props: PageStateProps;
 }
 
-@inject("nodeStore")
+@inject("nodeDetailStore")
 @observer
 class Index extends Component {
   /**
@@ -30,7 +29,7 @@ class Index extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: "节点"
+    navigationBarTitleText: "节点详情"
   };
 
   componentWillMount() {}
@@ -40,11 +39,12 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    Taro.request({ url: "https://www.v2ex.com/api/nodes/all.json" }).then(
-      res => {
-        this.props.nodeStore.setNodeData(res.data);
-      }
-    );
+    Taro.request({
+      url: "https://www.v2ex.com/api/nodes/show.json",
+      data: this.$router.params.name
+    }).then(res => {
+      this.props.nodeStore.setNodeData(res.data);
+    });
   }
 
   componentWillUnmount() {}
@@ -52,12 +52,7 @@ class Index extends Component {
   componentDidShow() {}
 
   componentDidHide() {}
-  tagOnClick (name) {
-    Taro.navigateTo({
-      url: "/pages/nodedetail/index?name=" + name
-    });
-  };
-  increment() {}
+
   render() {
     const {
       nodeStore: { nodeData }
@@ -66,11 +61,7 @@ class Index extends Component {
       <View className="index">
         {nodeData.map(c => {
           return (
-            <AtTag
-              onClick={this.tagOnClick.bind(this, c.name)}
-              className="tagml"
-              type="primary"
-            >
+            <AtTag className="tagml" type="primary">
               {c.title}
             </AtTag>
           );
