@@ -33,7 +33,13 @@ class App extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    pages: ["pages/hot/index", "pages/new/index", "pages/node/index","pages/nodedetail/index"],
+    pages: [
+      "pages/hot/index",
+      "pages/new/index",
+      "pages/node/index",
+      "pages/nodedetail/index",
+      "pages/about/index"
+    ],
     tabBar: {
       list: [
         {
@@ -51,6 +57,12 @@ class App extends Component {
         {
           pagePath: "pages/node/index",
           text: "节点"
+          //iconPath: "./assets/tab_me.png",
+          //selectedIconPath: "./assets/tab_me_f.png"
+        },
+        {
+          pagePath: "pages/about/index",
+          text: "关于"
           //iconPath: "./assets/tab_me.png",
           //selectedIconPath: "./assets/tab_me_f.png"
         }
