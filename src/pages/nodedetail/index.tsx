@@ -1,16 +1,15 @@
 import { ComponentType } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
-import { View, Button, Text } from "@tarojs/components";
+import { View, Image } from "@tarojs/components";
 import { observer, inject } from "@tarojs/mobx";
-import { AtTag } from "taro-ui";
-import "taro-ui/dist/style/components/tag.scss";
+import "taro-ui/dist/style/components/avatar.scss";
 
 import "./index.scss";
 
 type PageStateProps = {
   nodeDetailStore: {
-    nodeDetailData: {}
-    setNodeData: Function;
+    nodeDetailData: any;
+    setNodeDetailData: Function;
   };
 };
 
@@ -41,9 +40,10 @@ class Index extends Component {
   componentDidMount() {
     Taro.request({
       url: "https://www.v2ex.com/api/nodes/show.json",
-      data: this.$router.params.name
+      data: { name: this.$router.params.name }
     }).then(res => {
-      this.props.nodeStore.setNodeData(res.data);
+      this.config.navigationBarTitleText += "-" + res.data.title;
+      this.props.nodeDetailStore.setNodeDetailData(res.data);
     });
   }
 
@@ -55,17 +55,14 @@ class Index extends Component {
 
   render() {
     const {
-      nodeStore: { nodeData }
+      nodeDetailStore: { nodeDetailData }
     } = this.props;
     return (
       <View className="index">
-        {nodeData.map(c => {
-          return (
-            <AtTag className="tagml" type="primary">
-              {c.title}
-            </AtTag>
-          );
-        })}
+        <Image className="img" src={nodeDetailData.avatar_large}></Image>
+        <View className="header">{nodeDetailData.header}</View>
+        <View className="stars">stars：{nodeDetailData.stars}</View>
+        <View className="stars">主题：{nodeDetailData.topics}</View>
       </View>
     );
   }
