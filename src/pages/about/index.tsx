@@ -10,7 +10,10 @@ import {
   AtModalAction
 } from "taro-ui";
 import "taro-ui/dist/style/components/list.scss";
-
+import "taro-ui/dist/style/components/icon.scss";
+import "taro-ui/dist/style/components/modal.scss";
+import v2eximg from "../../assets/v2ex@2x.png";
+import githubimg from "../../assets/github.png";
 import "./index.scss";
 
 class Index extends Component {
@@ -42,13 +45,17 @@ class Index extends Component {
   componentDidHide() {}
 
   tarov2ex() {
-    this.state.isOpened = !this.state.isOpened;
+    this.setState({
+      isOpened: !this.state.isOpened
+    });
   }
 
   render() {
     return (
       <View className="index">
-        <Image className="img" src="../../assets/v2ex@2x.png"></Image>
+        <View className="imgview">
+          <Image className="img" src={v2eximg}></Image>
+        </View>
         <AtList>
           <AtListItem
             title="关于V2EX（way to explore）"
@@ -56,16 +63,16 @@ class Index extends Component {
           />
           <AtListItem
             title="关于taro-v2ex"
-            note=""
             arrow="right"
             onClick={this.tarov2ex.bind(this)}
           />
           <AtListItem
+            thumb={githubimg}
             title="github"
             note="https://github.com/sunven/taro-v2ex"
           />
         </AtList>
-        <AtModal isOpened={this.state.isOpened}>
+        <AtModal isOpened={this.state.isOpened} closeOnClickOverlay={false}>
           <AtModalHeader>关于taro-v2ex</AtModalHeader>
           <AtModalContent>
             <View>v2ex小程序版</View>
