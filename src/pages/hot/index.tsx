@@ -47,6 +47,12 @@ class Index extends Component {
     );
   }
 
+  atCardOnClick(id) {
+    Taro.navigateTo({
+      url: "/pages/topicdetail/index?id=" + id
+    });
+  }
+
   componentWillUnmount() {}
 
   componentDidShow() {}
@@ -62,7 +68,7 @@ class Index extends Component {
     };
     const scrollTop = 0;
     const Threshold = 20;
-    
+
     return (
       <ScrollView
         className="scrollview"
@@ -82,6 +88,7 @@ class Index extends Component {
               //thumb='http://www.logoquan.com/upload/list/20180421/logoquan15259400209.PNG'
               isFull={true}
               //extra='额外信息'
+              onClick={this.atCardOnClick.bind(this, c.id)}
             >
               {c.content}
             </AtCard>
