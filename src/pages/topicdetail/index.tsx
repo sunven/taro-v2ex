@@ -1,13 +1,15 @@
 import { ComponentType } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
-import { View } from "@tarojs/components";
+import { View, RichText } from "@tarojs/components";
 import "taro-ui/dist/style/components/article.scss";
 import "./index.scss";
+import ReplyList from "../../components/replylist";
 
 import dayjs from "dayjs";
 
 interface IState {
   article: ITopic;
+  replys: IReply[];
 }
 
 class Index extends Component<{}, IState> {
@@ -29,11 +31,19 @@ class Index extends Component<{}, IState> {
     }).then(res => {
       this.setState({ article: res.data[0] });
     });
+    Taro.request({
+      url: "https://www.v2ex.com/api/replies/show.json",
+      data: { topic_id: this.$router.params.id }
+    }).then(res => {
+      this.setState({ replys: res.data });
+    });
   }
 
   render() {
-    const { article } = this.state;
-    return (
+    const { article, replys } = this.state;
+    return article === undefined ? (
+      ""
+    ) : (
       <View className="at-article">
         <View className="at-article__h1">{article.title}</View>
         <View className="at-article__info">
@@ -42,9 +52,13 @@ class Index extends Component<{}, IState> {
         </View>
         <View className="at-article__content">
           <View className="at-article__section">
-            <View className="at-article__p">{article.content_rendered}</View>
+            <RichText
+              nodes={article.content_rendered}
+              className="at-article__p"
+            ></RichText>
           </View>
         </View>
+        <ReplyList replys={replys}></ReplyList>
       </View>
     );
   }
