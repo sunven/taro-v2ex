@@ -17,7 +17,7 @@ class ReplyItem extends Component<IProps, {}> {
           className="at-article__p"
         ></RichText>
         <View className="at-article__info replyitem__info">
-          {dayjs(reply.last_modified).format("YYYY-MM-DD HH:mm:ss")}
+          {dayjs.unix(reply.last_modified).format("YYYY-MM-DD HH:mm:ss")}
           &nbsp;&nbsp;&nbsp;{reply.member.username}
         </View>
       </View>

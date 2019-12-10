@@ -31,27 +31,15 @@ class Index extends Component {
     navigationBarTitleText: "节点详情"
   };
 
-  componentWillMount() {}
-
-  componentWillReact() {
-    console.log("componentWillReact");
-  }
-
   componentDidMount() {
     Taro.request({
       url: "https://www.v2ex.com/api/nodes/show.json",
       data: { name: this.$router.params.name }
     }).then(res => {
-      this.config.navigationBarTitleText += "-" + res.data.title;
+      this.config.navigationBarTitleText = res.data.title;
       this.props.nodeDetailStore.setNodeDetailData(res.data);
     });
   }
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
 
   render() {
     const {

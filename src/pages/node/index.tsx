@@ -1,12 +1,10 @@
 import { ComponentType } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
-import { View, Button, Text } from "@tarojs/components";
+import { View } from "@tarojs/components";
 import { observer, inject } from "@tarojs/mobx";
 import { AtTag } from "taro-ui";
 import "taro-ui/dist/style/components/tag.scss";
-
 import "./index.scss";
-import { CommonEventFunction } from "@tarojs/components/types/common";
 
 type PageStateProps = {
   nodeStore: {
@@ -33,12 +31,6 @@ class Index extends Component {
     navigationBarTitleText: "节点"
   };
 
-  componentWillMount() {}
-
-  componentWillReact() {
-    console.log("componentWillReact");
-  }
-
   componentDidMount() {
     Taro.request({ url: "https://www.v2ex.com/api/nodes/all.json" }).then(
       res => {
@@ -47,17 +39,12 @@ class Index extends Component {
     );
   }
 
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
-  tagOnClick (name) {
+  tagOnClick(name) {
     Taro.navigateTo({
       url: "/pages/nodedetail/index?name=" + name
     });
-  };
-  increment() {}
+  }
+
   render() {
     const {
       nodeStore: { nodeData }

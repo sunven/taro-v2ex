@@ -1,12 +1,9 @@
 import { ComponentType } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
-import { ScrollView, View } from "@tarojs/components";
 import { observer, inject } from "@tarojs/mobx";
-import { AtCard } from "taro-ui";
+import List from "../../components/list";
 import "taro-ui/dist/style/components/card.scss";
 import "./index.scss";
-
-import dayjs from "dayjs";
 
 type PageStateProps = {
   hotStore: {
@@ -33,12 +30,6 @@ class Index extends Component {
     navigationBarTitleText: "最热"
   };
 
-  componentWillMount() {}
-
-  componentWillReact() {
-    console.log("componentWillReact");
-  }
-
   componentDidMount() {
     Taro.request({ url: "https://www.v2ex.com/api/topics/hot.json" }).then(
       res => {
@@ -47,55 +38,11 @@ class Index extends Component {
     );
   }
 
-  atCardOnClick(id) {
-    Taro.navigateTo({
-      url: "/pages/topicdetail/index?id=" + id
-    });
-  }
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
-
   render() {
     const {
       hotStore: { hotData }
     } = this.props;
-    const scrollStyle = {
-      height: "100%"
-    };
-    const scrollTop = 0;
-    const Threshold = 20;
-
-    return (
-      <ScrollView
-        className="scrollview"
-        scrollY
-        scrollWithAnimation
-        scrollTop={scrollTop}
-        style={scrollStyle}
-        lowerThreshold={Threshold}
-        upperThreshold={Threshold}
-      >
-        {hotData.map(c => {
-          //return <View style={vStyleA}>{c.title}</View>;
-          return (
-            <AtCard
-              note={dayjs(c.last_modified).format("YYYY-MM-DD HH:mm:ss")}
-              title={c.title}
-              //thumb='http://www.logoquan.com/upload/list/20180421/logoquan15259400209.PNG'
-              isFull={true}
-              //extra='额外信息'
-              onClick={this.atCardOnClick.bind(this, c.id)}
-            >
-              {c.content}
-            </AtCard>
-          );
-        })}
-      </ScrollView>
-    );
+    return <List data={hotData}></List>;
   }
 }
 

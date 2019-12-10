@@ -1,27 +1,24 @@
-import { ComponentType } from 'react'
-import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
-import { observer, inject } from '@tarojs/mobx'
-
-import './index.scss'
+import { ComponentType } from "react";
+import Taro, { Component, Config } from "@tarojs/taro";
+import { observer, inject } from "@tarojs/mobx";
+import List from "../../components/list";
+import "taro-ui/dist/style/components/card.scss";
+import "./index.scss";
 
 type PageStateProps = {
-  counterStore: {
-    counter: number,
-    increment: Function,
-    decrement: Function,
-    incrementAsync: Function
-  }
-}
+  hotStore: {
+    hotData: Array<any>;
+    setHotData: Function;
+  };
+};
 
 interface Index {
   props: PageStateProps;
 }
 
-@inject('counterStore')
+@inject("hotStore")
 @observer
 class Index extends Component {
-
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -30,49 +27,23 @@ class Index extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: "最新"
+  };
+
+  componentDidMount() {
+    Taro.request({ url: "https://www.v2ex.com/api/topics/latest.json" }).then(
+      res => {
+        this.props.hotStore.setHotData(res.data);
+      }
+    );
   }
 
-  componentWillMount () { }
-
-  componentWillReact () {
-    console.log('componentWillReact')
-  }
-
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
-  increment = () => {
-    const { counterStore } = this.props
-    counterStore.increment()
-  }
-
-  decrement = () => {
-    const { counterStore } = this.props
-    counterStore.decrement()
-  }
-
-  incrementAsync = () => {
-    const { counterStore } = this.props
-    counterStore.incrementAsync()
-  }
-
-  render () {
-    const { counterStore: { counter } } = this.props
-    return (
-      <View className='index'>
-        <Button onClick={this.increment}>+</Button>
-        <Button onClick={this.decrement}>-</Button>
-        <Button onClick={this.incrementAsync}>Add Async</Button>
-        <Text>{counter}</Text>
-      </View>
-    )
+  render() {
+    const {
+      hotStore: { hotData }
+    } = this.props;
+    return <List data={hotData}></List>;
   }
 }
 
-export default Index  as ComponentType
+export default Index as ComponentType;

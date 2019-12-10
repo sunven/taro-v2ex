@@ -1,6 +1,6 @@
 import { ComponentType } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
-import { View, RichText } from "@tarojs/components";
+import { View, RichText, ScrollView } from "@tarojs/components";
 import "taro-ui/dist/style/components/article.scss";
 import "./index.scss";
 import ReplyList from "../../components/replylist";
@@ -21,7 +21,7 @@ class Index extends Component<{}, IState> {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: "最热"
+    navigationBarTitleText: "详情"
   };
 
   componentDidMount() {
@@ -41,25 +41,40 @@ class Index extends Component<{}, IState> {
 
   render() {
     const { article, replys } = this.state;
+    const scrollStyle = {
+      height: "100%"
+    };
+    const scrollTop = 0;
+    const Threshold = 20;
     return article === undefined ? (
       ""
     ) : (
-      <View className="at-article">
-        <View className="at-article__h1">{article.title}</View>
-        <View className="at-article__info">
-          {dayjs(article.last_modified).format("YYYY-MM-DD HH:mm:ss")}
-          &nbsp;&nbsp;&nbsp;{article.member.username}
-        </View>
-        <View className="at-article__content">
-          <View className="at-article__section">
-            <RichText
-              nodes={article.content_rendered}
-              className="at-article__p"
-            ></RichText>
+      <ScrollView
+        className="scrollview"
+        scrollY
+        scrollWithAnimation
+        scrollTop={scrollTop}
+        style={scrollStyle}
+        lowerThreshold={Threshold}
+        upperThreshold={Threshold}
+      >
+        <View className="at-article">
+          <View className="at-article__h1">{article.title}</View>
+          <View className="at-article__info">
+            {dayjs.unix(article.last_modified).format("YYYY-MM-DD HH:mm:ss")}
+            &nbsp;&nbsp;&nbsp;{article.member.username}
           </View>
+          <View className="at-article__content">
+            <View className="at-article__section">
+              <RichText
+                nodes={article.content_rendered}
+                className="at-article__p"
+              ></RichText>
+            </View>
+          </View>
+          <ReplyList replys={replys}></ReplyList>
         </View>
-        <ReplyList replys={replys}></ReplyList>
-      </View>
+      </ScrollView>
     );
   }
 }
